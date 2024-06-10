@@ -14,25 +14,29 @@ class KNNHH(HyperHeuristic):
         self._neighbors = neighbors
 
     def train(self, filename: str) -> None:
+        #features = ["DENSITY", "MAX_DEG", "MIN_DEG"]
+        #heuristics = ["DEF", "DEG", "COL_DEG", "UNCOL_DEG"]
         data = pd.read_csv(filename, header=0)
         columns = ["INSTANCE", "BEST", "ORACLE"] + self._heuristics
         X = data.drop(columns, axis=1).values
         y = data["BEST"].values
         for i in range(len(self._heuristics)):
             y[y == self._heuristics[i]] = i
-        y = y.astype("int")
+        y = y.astype("int") #y values range from 0 - 3, indicating the index of the selected heuristic
+        
 
         # Initialize the KNN model
         self._model = neighbors.KNeighborsClassifier(self._neighbors, weights="distance")
 
         # Generate learning curve
         self._plot_learning_curve(X, y)
+        plt.close()
 
     def _plot_learning_curve(self, X, y):
         plt.ion()  # Turn on interactive mode
         fig, ax = plt.subplots()
         ax.set_title("Learning Curve (KNN)")
-        ax.set_xlabel("Training examples")
+        ax.set_xlabel("Training instances")
         ax.set_ylabel("Score")
         ax.set_ylim(0.0, 1.1)
         ax.grid()

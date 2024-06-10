@@ -24,12 +24,13 @@ class RFHH(HyperHeuristic):
 
         # Generate learning curve
         self._plot_learning_curve(X, y)
+        plt.close()
 
     def _plot_learning_curve(self, X, y):
         plt.ion()  # Turn on interactive mode
         fig, ax = plt.subplots()
         ax.set_title("Learning Curve (RandomForest)")
-        ax.set_xlabel("Training examples")
+        ax.set_xlabel("Training instances")
         ax.set_ylabel("Score")
         ax.set_ylim(0.0, 1.1)
         ax.grid()
